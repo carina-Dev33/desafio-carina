@@ -25,9 +25,7 @@ services:
       - "3100:3100"
     volumes:
       - ./backend/loki/loki.yaml:/etc/loki/loki.yaml
-      - loki_data:/tmp/loki # Volume para persistência
-    
-  
+      - loki_data:/tmp/loki 
 
   tempo:
     image: grafana/tempo:latest
@@ -44,7 +42,7 @@ services:
       - "9009:9009"
     volumes:
       - ./backend/mimir/mimir.yaml:/etc/mimir/mimir.yaml
-      - mimir_data:/data # Volume para persistência
+      - mimir_data:/data 
     command: -config.file=/etc/mimir/mimir.yaml
 
   dice-api:
@@ -105,7 +103,6 @@ services:
     privileged: true
     restart: unless-stopped
 
-# ADICIONE ISSO NO FINAL DO ARQUIVO:
 volumes:
   mimir_data:
   loki_data:
