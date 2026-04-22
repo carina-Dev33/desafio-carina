@@ -6,4 +6,4 @@ opentelemetry-instrumentation-requests==0.46b0
 opentelemetry-instrumentation-logging==0.46b0
 opentelemetry-exporter-otlp-proto-http==0.46b0
 requests==2.31.0
-opentelemetry-exporter-otlp-proto-grpc  # <--- ESSA É A LINHA QUE FALTA
+opentelemetry-exporter-otlp-proto-grpc  
