@@ -1,0 +1,146 @@
+{
+  "dashboard": {
+    "title": "Tempo, Mimir e Loki - Stack Completa",
+    "description": "Monitoramento integrado de traces, métricas e logs",
+    "tags": ["tempo", "mimir", "loki", "observability", "backend"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "title": "Status dos Serviços",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {"expr": "up{job=\"tempo\"}", "legendFormat": "Tempo", "refId": "A"},
+          {"expr": "up{job=\"mimir\"}", "legendFormat": "Mimir", "refId": "B"},
+          {"expr": "up{job=\"loki\"}", "legendFormat": "Loki", "refId": "C"}
+        ]
+      },
+      {
+        "title": "Uso de Memória por Serviço",
+        "type": "barchart",
+        "gridPos": {"h": 6, "w": 12, "x": 12, "y": 0},
+        "targets": [
+          {"expr": "go_memstats_alloc_bytes{job=\"tempo\"}", "legendFormat": "Tempo", "refId": "A"},
+          {"expr": "go_memstats_alloc_bytes{job=\"mimir\"}", "legendFormat": "Mimir", "refId": "B"},
+          {"expr": "go_memstats_alloc_bytes{job=\"loki\"}", "legendFormat": "Loki", "refId": "C"}
+        ]
+      },
+      {
+        "title": "Tempo - Spans e Traces",
+        "type": "row",
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 6}
+      },
+      {
+        "title": "Spans Recebidos",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 7},
+        "targets": [
+          {"expr": "rate(tempo_distributor_spans_received_total[1m])", "legendFormat": "Spans/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Traces Criados",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 7},
+        "targets": [
+          {"expr": "rate(tempo_ingester_traces_created_total[1m])", "legendFormat": "Traces/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Latência Tempo (P95)",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 7},
+        "targets": [
+          {"expr": "histogram_quantile(0.95, rate(tempo_request_duration_seconds_bucket[5m]))", "legendFormat": "P95", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Mimir - Métricas",
+        "type": "row",
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 15}
+      },
+      {
+        "title": "Appends por Segundo",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 16},
+        "targets": [
+          {"expr": "rate(cortex_distributor_ingester_appends_total[1m])", "legendFormat": "Appends/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Séries em Memória",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 16},
+        "targets": [
+          {"expr": "cortex_ingester_memory_series", "legendFormat": "Séries", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Amostras Descartadas",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 16},
+        "targets": [
+          {"expr": "rate(cortex_discarded_samples_total[1m])", "legendFormat": "Descartadas/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Loki - Logs",
+        "type": "row",
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 24}
+      },
+      {
+        "title": "Bytes Recebidos",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 25},
+        "targets": [
+          {"expr": "rate(loki_distributor_bytes_received_total[1m])", "legendFormat": "Bytes/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Linhas de Log",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 25},
+        "targets": [
+          {"expr": "rate(loki_ingester_log_lines_total[1m])", "legendFormat": "Linhas/seg", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Streams Ativos",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 25},
+        "targets": [
+          {"expr": "loki_ingester_memory_streams", "legendFormat": "Streams", "refId": "A"}
+        ]
+      },
+      {
+        "title": "CPU por Serviço",
+        "type": "barchart",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 33},
+        "targets": [
+          {"expr": "rate(container_cpu_usage_seconds_total{name=~\"tempo|mimir|loki\"}[5m])", "legendFormat": "{{name}}", "refId": "A"}
+        ]
+      },
+      {
+        "title": "Requisições por Segundo",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 33},
+        "targets": [
+          {"expr": "rate(tempo_request_duration_seconds_count[5m])", "legendFormat": "Tempo", "refId": "A"},
+          {"expr": "rate(loki_request_duration_seconds_count[5m])", "legendFormat": "Loki", "refId": "B"},
+          {"expr": "rate(mimir_request_duration_seconds_count[5m])", "legendFormat": "Mimir", "refId": "C"}
+        ]
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "datasource",
+          "type": "datasource",
+          "query": "prometheus",
+          "label": "Data Source"
+        }
+      ]
+    },
+    "time": {"from": "now-1h", "to": "now"}
+  }
+}
