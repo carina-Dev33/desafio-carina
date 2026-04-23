@@ -1,9 +1,5 @@
-fastapi==0.115.0
-uvicorn[standard]==0.30.6
-opentelemetry-distro==0.46b0
-opentelemetry-instrumentation-fastapi==0.46b0
-opentelemetry-instrumentation-requests==0.46b0
-opentelemetry-instrumentation-logging==0.46b0
-opentelemetry-exporter-otlp-proto-http==0.46b0
-requests==2.31.0
-opentelemetry-exporter-otlp-proto-grpc  
+fastapi
+uvicorn
+opentelemetry-distro
+opentelemetry-instrumentation-fastapi
+opentelemetry-exporter-otlp-proto-grpc

@@ -22,7 +22,7 @@ datasources:
       lokiSearch:
         datasourceUid: 'loki'
       serviceMap:
-        datasourceUid: 'mimir' # Essencial para o Service Graph funcionar
+        datasourceUid: 'mimir'
       nodeGraph:
         enabled: true
       tracesToMetrics:

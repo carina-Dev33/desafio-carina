@@ -10,4 +10,12 @@ providers:
       path: /etc/grafana/provisioning/dashboards
 
 
-  
+  - name: '\backend'
+    orgId: 1
+    folder: 'Observabilidade backend'
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
+

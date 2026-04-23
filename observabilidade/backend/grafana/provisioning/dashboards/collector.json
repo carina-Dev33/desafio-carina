@@ -1,0 +1,73 @@
+{
+  "title": "OTEL Collector – Receiver, Processor & Exporter",
+  "schemaVersion": 36,
+  "version": 1,
+  "panels": [
+    {
+      "title": "Exporter – Taxa de métricas enviadas (métricas/s)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "rate(otelcol_exporter_sent_metric_points_total[1m])",
+          "legendFormat": "{{exporter}}"
+        }
+      ]
+    },
+    {
+      "title": "Exporter – Total acumulado de métricas enviadas",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "otelcol_exporter_sent_metric_points_total",
+          "legendFormat": "{{exporter}}"
+        }
+      ]
+    },
+    {
+      "title": "Processor – Memória alocada (bytes)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "otelcol_process_runtime_alloc_bytes_total",
+          "legendFormat": "processor {{instance}}"
+        }
+      ]
+    },
+    {
+      "title": "Processor – Taxa de métricas aceitas (métricas/s)",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "rate(otelcol_processor_accepted_metric_points_total[1m])",
+          "legendFormat": "processor {{instance}}"
+        }
+      ]
+    },
+    {
+      "title": "Receiver – Taxa de métricas recebidas (métricas/s)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "rate(otelcol_receiver_accepted_metric_points_total[1m])",
+          "legendFormat": "receiver {{instance}}"
+        }
+      ]
+    },
+    {
+      "title": "Receiver – Memória alocada (bytes)",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "otelcol_process_runtime_alloc_bytes_total",
+          "legendFormat": "receiver {{instance}}"
+        }
+      ]
+    }
+  ]
+}

@@ -6,13 +6,29 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-  filelog/mimir:
-    include: [/var/lib/docker/containers/*/*-json.log]
-    start_at: beginning
-    operators:
-      - type: json_parser
-        id: docker-json
-        parse_from: body
+  prometheus/loki:
+    config:
+      scrape_configs:
+        - job_name: loki
+          scrape_interval: 15s
+          static_configs:
+            - targets: ["loki:3100"]
+
+  prometheus/mimir:
+    config:
+      scrape_configs:
+        - job_name: mimir
+          scrape_interval: 15s
+          static_configs:
+            - targets: ["mimir:9009"]
+
+  prometheus/tempo:
+    config:
+      scrape_configs:
+        - job_name: tempo
+          scrape_interval: 15s
+          static_configs:
+            - targets: ["tempo:3200"]
 
   prometheus/collector:
     config:
@@ -26,6 +42,7 @@ receivers:
     config:
       scrape_configs:
         - job_name: node-exporter
+          scrape_interval: 15s
           static_configs:
             - targets: ["node-exporter:9100"]
 
@@ -33,6 +50,7 @@ receivers:
     config:
       scrape_configs:
         - job_name: cadvisor
+          scrape_interval: 15s
           static_configs:
             - targets: ["cadvisor:8080"]
 
@@ -87,16 +105,40 @@ service:
 
   pipelines:
     traces:
-      receivers: [otlp]
-      processors: [memory_limiter, resource, batch]
-      exporters: [otlp/tempo, debug]
+      receivers:
+        - otlp
+      processors:
+        - memory_limiter
+        - resource
+        - batch
+      exporters:
+        - otlp/tempo
+        - debug
 
     metrics:
-      receivers: [otlp, prometheus/node, prometheus/cadvisor, prometheus/collector]
-      processors: [memory_limiter, resource, batch]
-      exporters: [prometheusremotewrite, debug]
+      receivers:
+        - otlp
+        - prometheus/loki
+        - prometheus/mimir
+        - prometheus/tempo
+        - prometheus/collector
+        - prometheus/node
+        - prometheus/cadvisor
+      processors:
+        - memory_limiter
+        - resource
+        - batch
+      exporters:
+        - prometheusremotewrite
+        - debug
 
     logs:
-      receivers: [otlp, filelog/mimir]
-      processors: [memory_limiter, resource, batch]
-      exporters: [otlphttp/loki, debug]
+      receivers:
+        - otlp
+      processors:
+        - memory_limiter
+        - resource
+        - batch
+      exporters:
+        - otlphttp/loki
+        - debug
