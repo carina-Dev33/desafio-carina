@@ -7,7 +7,7 @@ services:
       - ./backend/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./backend/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./backend/grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
-      - grafana_data:/var/lib/grafana  # Adicionado volume persistente
+      - grafana_data:/var/lib/grafana  
     environment:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
@@ -76,7 +76,7 @@ services:
       - OTEL_PYTHON_INSTRUMENTATION_FASTAPI_ENABLED=true
       - PYTHONUNBUFFERED=1
     depends_on:
-      - otel-collector  # Já está correto!
+      - otel-collector  
 
   node-exporter:
     image: prom/node-exporter:v1.10.2
@@ -109,4 +109,4 @@ volumes:
   mimir_data:
   loki_data:
   tempo_data:
-  grafana_data:  # Adicionado volume do Grafana
+  grafana_data:  
